@@ -1,6 +1,6 @@
 module AccountComponent
   class Projection
-    include EventStore::EntityProjection
+    include EntityProjection
     include Messages::Events
 
     entity_name :account

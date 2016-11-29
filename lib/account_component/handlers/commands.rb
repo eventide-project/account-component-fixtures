@@ -1,18 +1,18 @@
 module AccountComponent
   module Handlers
     class Commands
-      include EventStore::Messaging::Handler
-      include EventStore::Messaging::StreamName
+      include Messaging::Handler
+      include Messaging::StreamName
       include AccountComponent::Messages::Commands
       include AccountComponent::Messages::Events
-      include Telemetry::Logger::Dependency
+      include Log::Dependency
 
-      dependency :writer, EventStore::Messaging::Writer
+      dependency :writer, Messaging::Postgres::Write
       dependency :store, AccountComponent::Store
       dependency :clock, Clock::UTC
 
       def configure
-        EventStore::Messaging::Writer.configure self
+        Messaging::Postgres::Write.configure self
         AccountComponent::Store.configure self
         Clock::UTC.configure self
       end
