@@ -1,7 +1,7 @@
 require 'date'
 require 'pp'
 
-require 'eventide/event_store'
+require 'eventide/postgres'
 require 'collection'
 require 'validate'
 require 'initializer'; Initializer.activate
