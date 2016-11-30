@@ -32,8 +32,7 @@ module Fixtures
       end
     end
 
-    ## TODO remove input_event_data
-    def self.build(handler:, input_message:, input_event_data: nil, entity: nil, record_new_entity: nil)
+    def self.build(handler:, input_message:, entity: nil, record_new_entity: nil)
       record_new_entity ||= false
 
       instance = new(handler, input_message, entity)
