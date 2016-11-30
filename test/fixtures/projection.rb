@@ -23,7 +23,7 @@ module Fixtures
 
       context name do
         context ""
-        projection.apply(event)
+        projection.(event)
 
         if block_given?
           blk.call(fixture)

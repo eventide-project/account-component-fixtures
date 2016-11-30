@@ -4,8 +4,7 @@ context "Handle Commands" do
   context "Accept command if the account is not current" do
     fixture = Fixtures::Handler.build(
       handler: Handlers::Commands.new,
-      input_message: Controls::Commands::Release.example,
-      input_event_data: Controls::EventData.example(sequence: 1),
+      input_message: Controls::Commands::Release.example(sequence: 1),
       record_new_entity: true
     )
 

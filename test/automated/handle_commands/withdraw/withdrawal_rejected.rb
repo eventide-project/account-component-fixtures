@@ -5,7 +5,6 @@ context "Handle Commands" do
     fixture = Fixtures::Handler.build(
       handler: Handlers::Commands.new,
       input_message: Controls::Commands::Withdraw.example(amount: 1),
-      input_event_data: Controls::EventData.example,
       entity: Controls::Account.example(balance: 1, held: 1)
     )
 
