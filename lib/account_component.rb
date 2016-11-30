@@ -33,5 +33,3 @@ require 'account_component/commands/deposit'
 require 'account_component/commands/withdraw'
 require 'account_component/commands/hold'
 require 'account_component/commands/open_account'
-
-require 'account_component/dispatcher'
