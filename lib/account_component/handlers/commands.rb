@@ -23,22 +23,24 @@ module AccountComponent
         logger.trace { "Opening account" }
         logger.trace(tag: :verbose) { open_account.pretty_inspect }
 
-        account_opened = AccountOpened.follow open_account
+        account_id = open_account.account_id
+
+        stream_name = stream_name(account_id)
+
+        account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = open_account.metadata.position
 
-        time = clock.iso8601
-        account_opened.processed_time = time
-        account_opened.sequence = sequence
-
-        stream_name = stream_name(account_opened.account_id)
-
-        account, stream_version = store.fetch(open_account.account_id, include: :version)
-
         if account.current?(sequence)
-          logger.warn { "Command ignored (Command: #{account_opened.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
+          logger.warn { "Command ignored (Command: #{open_account.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
+
+        time = clock.iso8601
+
+        account_opened = AccountOpened.follow(open_account)
+        account_opened.processed_time = time
+        account_opened.sequence = sequence
 
         writer.write(account_opened, stream_name, expected_version: stream_version)
 
@@ -50,21 +52,24 @@ module AccountComponent
         logger.trace { "Depositing" }
         logger.trace(tag: :verbose) { deposit.pretty_inspect }
 
-        deposited = Deposited.follow deposit
+        account_id = deposit.account_id
+
+        stream_name = stream_name(account_id)
+
+        account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = deposit.metadata.position
-
-        time = clock.iso8601
-        deposited.processed_time = time
-        deposited.sequence = sequence
-
-        stream_name = stream_name(deposit.account_id)
-        account, stream_version = store.fetch(deposit.account_id, include: :version)
 
         if account.current?(sequence)
           logger.warn { "Command ignored (Command: #{deposit.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
+
+        time = clock.iso8601
+
+        deposited = Deposited.follow(deposit)
+        deposited.processed_time = time
+        deposited.sequence = sequence
 
         writer.write(deposited, stream_name, expected_version: stream_version)
 
@@ -76,23 +81,25 @@ module AccountComponent
         logger.trace { "Holding" }
         logger.trace(tag: :verbose) { hold.pretty_inspect }
 
-        sequence = hold.metadata.position
-
-        time = clock.iso8601
         account_id = hold.account_id
 
         stream_name = stream_name(account_id)
+
         account, stream_version = store.fetch(account_id, include: :version)
+
+        sequence = hold.metadata.position
 
         if account.current?(sequence)
           logger.warn { "Command ignored (Command: #{hold.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
 
+        time = clock.iso8601
+
         amount = hold.amount
 
         if !account.available_balance?(amount)
-          hold_rejected = HoldRejected.follow hold
+          hold_rejected = HoldRejected.follow(hold)
           hold_rejected.processed_time = time
           hold_rejected.sequence = sequence
 
@@ -103,7 +110,7 @@ module AccountComponent
           return
         end
 
-        held = Held.follow hold
+        held = Held.follow(hold)
         held.processed_time = time
         held.sequence = sequence
 
@@ -117,23 +124,25 @@ module AccountComponent
         logger.trace { "Withdrawing" }
         logger.trace(tag: :verbose) { withdraw.pretty_inspect }
 
-        sequence = withdraw.metadata.position
-
-        time = clock.iso8601
         account_id = withdraw.account_id
 
         stream_name = stream_name(account_id)
+
         account, stream_version = store.fetch(account_id, include: :version)
+
+        sequence = withdraw.metadata.position
 
         if account.current?(sequence)
           logger.warn { "Command ignored (Command: #{withdraw.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
 
+        time = clock.iso8601
+
         amount = withdraw.amount
 
         if !account.available_balance?(amount)
-          withdrawal_rejected = WithdrawalRejected.follow withdraw
+          withdrawal_rejected = WithdrawalRejected.follow(withdraw)
           withdrawal_rejected.processed_time = time
           withdrawal_rejected.sequence = sequence
 
@@ -144,7 +153,7 @@ module AccountComponent
           return
         end
 
-        withdrawn = Withdrawn.follow withdraw
+        withdrawn = Withdrawn.follow(withdraw)
         withdrawn.processed_time = time
         withdrawn.sequence = sequence
 
@@ -158,21 +167,24 @@ module AccountComponent
         logger.trace { "Releasing" }
         logger.trace(tag: :verbose) { release.pretty_inspect }
 
-        released = Released.follow release
+        account_id = release.account_id
+
+        stream_name = stream_name(account_id)
+
+        account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = release.metadata.position
-
-        time = clock.iso8601
-        released.processed_time = time
-        released.sequence = sequence
-
-        stream_name = stream_name(release.account_id)
-        account, stream_version = store.fetch(release.account_id, include: :version)
 
         if account.current?(sequence)
           logger.warn { "Command ignored (Command: #{release.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
+
+        time = clock.iso8601
+
+        released = Released.follow(release)
+        released.processed_time = time
+        released.sequence = sequence
 
         writer.write(released, stream_name, expected_version: stream_version)
 
