@@ -18,8 +18,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'eventide-postgres'
   s.add_runtime_dependency 'collection'
   s.add_runtime_dependency 'validate'
-  s.add_runtime_dependency 'initializer'
-  s.add_runtime_dependency 'process_host'
 
   s.add_development_dependency 'test_bench'
 end
