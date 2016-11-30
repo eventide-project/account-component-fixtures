@@ -1,3 +1,3 @@
 module Account
-  Client = AccountComponent
+  Client = AccountComponent::Commands
 end

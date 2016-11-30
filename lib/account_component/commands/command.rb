@@ -1,17 +1,16 @@
 module AccountComponent
   module Commands
-    ## TODO module, not class
     module Command
       def self.included(cls)
         cls.class_exec do
-          include EventStore::Messaging::StreamName
+          include Messaging::StreamName
           include AccountComponent::Messages::Commands
           include AccountComponent::Messages::Events
           include Telemetry::Logger::Dependency
 
           attr_accessor :reply_stream_name
 
-          dependency :writer, EventStore::Messaging::Writer
+          dependency :writer, Messaging::Postgres::Write
           dependency :clock, Clock::UTC
 
           category :account
@@ -20,7 +19,7 @@ module AccountComponent
       end
 
       def configure
-        EventStore::Messaging::Writer.configure self
+        Messaging::Postgres::Write.configure self
         Clock::UTC.configure self
       end
 

@@ -3,7 +3,7 @@ module AccountComponent
     module EventData
       def self.example(sequence: nil)
         sequence ||= self.number
-        EventStore::Client::HTTP::Controls::EventData::Read.example(sequence)
+        EventSource::EventData::Read.example(sequence)
       end
 
       def self.number

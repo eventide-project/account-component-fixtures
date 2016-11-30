@@ -2,7 +2,7 @@ module Fixtures
   class Handler
     include TestBench::Fixture
 
-    initializer :handler, :input_message, :input_event_data, rw(:entity)
+    initializer :handler, :input_message, rw(:entity)
 
     def raw_time
       Controls::Time::Processed::Raw.example
@@ -32,10 +32,11 @@ module Fixtures
       end
     end
 
-    def self.build(handler:, input_message:, input_event_data:, entity: nil, record_new_entity: nil)
+    ## TODO remove input_event_data
+    def self.build(handler:, input_message:, input_event_data: nil, entity: nil, record_new_entity: nil)
       record_new_entity ||= false
 
-      instance = new(handler, input_message, input_event_data, entity)
+      instance = new(handler, input_message, entity)
 
       instance.set_clock_time
 
@@ -61,7 +62,7 @@ module Fixtures
 
     def call(output:, &blk)
       context "#{input_message.message_type}" do
-        handler.handle(input_message, input_event_data)
+        handler.(input_message)
 
         telemetry_data = telemetry_data(output)
 
@@ -71,7 +72,7 @@ module Fixtures
         expected_version = telemetry_data &.expected_version
         reply_stream_name = telemetry_data &.reply_stream_name
 
-        fixture = Fixture.new(command_name, output_message, input_message, input_event_data, entity, stream_name, expected_version, reply_stream_name, clock_time)
+        fixture = Fixture.new(command_name, output_message, input_message, entity, stream_name, expected_version, reply_stream_name, clock_time)
 
         if block_given?
           blk.(fixture)
@@ -92,7 +93,6 @@ module Fixtures
         :command_name,
         :output_message,
         :input_message,
-        :input_event_data,
         :entity,
         :stream_name,
         :expected_version,
@@ -105,7 +105,7 @@ module Fixtures
       end
 
       def input_sequence
-        input_event_data.sequence
+        input_message.metadata.position
       end
 
       def output_sequence
@@ -113,7 +113,7 @@ module Fixtures
       end
 
       def current?
-        entity.current?(input_event_data)
+        entity.current?(input_sequence)
       end
 
       def written?
@@ -131,7 +131,9 @@ module Fixtures
       def assert_written
         context ""
         context "#{command_name}" do
-          assert(written?)
+          test "#{command_name} is written" do
+            assert(written?)
+          end
 
           context "[Stream: #{stream_name}]"
           context "[Expected Version: #{expected_version}]" if expected_version

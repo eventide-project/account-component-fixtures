@@ -1,6 +1,14 @@
-.DS_Store
-gems
+.DS_store
+.bundle/
+.ruby-version
+.ruby-gemset
+.rvmrc
+Gemfile.lock
+*.log
 *.gem
-.support_config
+gems
+gems_backup
 *scratch*
 *notes*
+loader.rb
+gems.txt

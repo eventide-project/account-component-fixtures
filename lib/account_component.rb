@@ -1,10 +1,10 @@
 require 'date'
 require 'pp'
 
-require 'eventide/event_store'
+require 'eventide/postgres'
 require 'collection'
 require 'validate'
-require 'initializer'; Initializer.activate
+# require 'initializer'; Initializer.activate
 
 require 'account_component/messages/commands/open_account'
 require 'account_component/messages/commands/deposit'
@@ -29,9 +29,8 @@ require 'account_component/handlers/commands'
 require 'account_component/stream_names'
 
 require 'account_component/commands/command'
+require 'account_component/commands/open_account'
 require 'account_component/commands/deposit'
 require 'account_component/commands/withdraw'
 require 'account_component/commands/hold'
-require 'account_component/commands/open_account'
-
-require 'account_component/dispatcher'
+require 'account_component/commands/release'

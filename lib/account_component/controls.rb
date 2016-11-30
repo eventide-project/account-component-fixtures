@@ -1,7 +1,4 @@
-require 'ostruct'
-
 require 'identifier/uuid/controls'
-require 'event_store/client/http/controls'
 
 require 'account_component/controls/time'
 require 'account_component/controls/id'
