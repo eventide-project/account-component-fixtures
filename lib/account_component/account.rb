@@ -7,7 +7,7 @@ module AccountComponent
     attribute :balance, Numeric, :default => 0
     attribute :held, Numeric, :default => 0
     attribute :opened_time, Time
-    attribute :sequence, Numeric, :default => 0
+    attribute :sequence, Numeric ## prolly should have a default, otherwise first command can't be processed, :default => 0
 
     def open?
       !opened_time.nil?
@@ -42,7 +42,8 @@ module AccountComponent
     end
 
     def current?(sequence)
-      return self.sequence >= sequence
+      return false if self.sequence.nil?
+      self.sequence >= sequence
     end
   end
 end
