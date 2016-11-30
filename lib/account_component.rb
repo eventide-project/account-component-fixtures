@@ -4,7 +4,7 @@ require 'pp'
 require 'eventide/postgres'
 require 'collection'
 require 'validate'
-require 'initializer'; Initializer.activate
+# require 'initializer'; Initializer.activate
 
 require 'account_component/messages/commands/open_account'
 require 'account_component/messages/commands/deposit'

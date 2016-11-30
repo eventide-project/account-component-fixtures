@@ -43,7 +43,12 @@ module AccountComponent
 
     def current?(other)
       return false if sequence.nil?
-      self.sequence >= other.sequence
+
+      if other.is_a? Numeric
+        return self.sequence >= other
+      else
+        return self.sequence >= other.sequence
+      end
     end
   end
 end

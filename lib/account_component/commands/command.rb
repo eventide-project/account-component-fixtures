@@ -10,7 +10,7 @@ module AccountComponent
 
           attr_accessor :reply_stream_name
 
-          dependency :writer, Messaging::Postgres::Writer
+          dependency :writer, Messaging::Postgres::Write
           dependency :clock, Clock::UTC
 
           category :account
@@ -19,7 +19,7 @@ module AccountComponent
       end
 
       def configure
-        Messaging::Postgres::Writer.configure self
+        Messaging::Postgres::Write.configure self
         Clock::UTC.configure self
       end
 
