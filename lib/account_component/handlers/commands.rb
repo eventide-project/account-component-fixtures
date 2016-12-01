@@ -25,8 +25,6 @@ module AccountComponent
 
         account_id = open_account.account_id
 
-        stream_name = stream_name(account_id)
-
         account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = open_account.metadata.position
@@ -42,6 +40,8 @@ module AccountComponent
         account_opened.processed_time = time
         account_opened.sequence = sequence
 
+        stream_name = stream_name(account_id)
+
         writer.write(account_opened, stream_name, expected_version: stream_version)
 
         logger.info { "Opened account" }
@@ -53,8 +53,6 @@ module AccountComponent
         logger.trace(tag: :verbose) { deposit.pretty_inspect }
 
         account_id = deposit.account_id
-
-        stream_name = stream_name(account_id)
 
         account, stream_version = store.fetch(account_id, include: :version)
 
@@ -71,6 +69,8 @@ module AccountComponent
         deposited.processed_time = time
         deposited.sequence = sequence
 
+        stream_name = stream_name(account_id)
+
         writer.write(deposited, stream_name, expected_version: stream_version)
 
         logger.info { "Deposited" }
@@ -83,8 +83,6 @@ module AccountComponent
 
         account_id = hold.account_id
 
-        stream_name = stream_name(account_id)
-
         account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = hold.metadata.position
@@ -95,6 +93,8 @@ module AccountComponent
         end
 
         time = clock.iso8601
+
+        stream_name = stream_name(account_id)
 
         amount = hold.amount
 
@@ -126,8 +126,6 @@ module AccountComponent
 
         account_id = withdraw.account_id
 
-        stream_name = stream_name(account_id)
-
         account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = withdraw.metadata.position
@@ -138,6 +136,8 @@ module AccountComponent
         end
 
         time = clock.iso8601
+
+        stream_name = stream_name(account_id)
 
         amount = withdraw.amount
 
@@ -169,8 +169,6 @@ module AccountComponent
 
         account_id = release.account_id
 
-        stream_name = stream_name(account_id)
-
         account, stream_version = store.fetch(account_id, include: :version)
 
         sequence = release.metadata.position
@@ -185,6 +183,8 @@ module AccountComponent
         released = Released.follow(release)
         released.processed_time = time
         released.sequence = sequence
+
+        stream_name = stream_name(account_id)
 
         writer.write(released, stream_name, expected_version: stream_version)
 
