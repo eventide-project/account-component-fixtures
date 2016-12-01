@@ -29,7 +29,7 @@ module AccountComponent
 
         sequence = open_account.metadata.position
 
-        if account.current?(sequence)
+        if account.up_to_date?(sequence)
           logger.warn { "Command ignored (Command: #{open_account.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
@@ -58,7 +58,7 @@ module AccountComponent
 
         sequence = deposit.metadata.position
 
-        if account.current?(sequence)
+        if account.up_to_date?(sequence)
           logger.warn { "Command ignored (Command: #{deposit.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
@@ -87,7 +87,7 @@ module AccountComponent
 
         sequence = hold.metadata.position
 
-        if account.current?(sequence)
+        if account.up_to_date?(sequence)
           logger.warn { "Command ignored (Command: #{hold.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
@@ -130,7 +130,7 @@ module AccountComponent
 
         sequence = withdraw.metadata.position
 
-        if account.current?(sequence)
+        if account.up_to_date?(sequence)
           logger.warn { "Command ignored (Command: #{withdraw.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end
@@ -173,7 +173,7 @@ module AccountComponent
 
         sequence = release.metadata.position
 
-        if account.current?(sequence)
+        if account.up_to_date?(sequence)
           logger.warn { "Command ignored (Command: #{release.message_type}, Sequence: #{sequence}, Account Sequence: #{account.sequence})" }
           return
         end

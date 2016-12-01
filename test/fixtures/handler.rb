@@ -111,8 +111,8 @@ module Fixtures
         output_message.sequence
       end
 
-      def current?
-        entity.current?(input_sequence)
+      def up_to_date?
+        entity.up_to_date?(input_sequence)
       end
 
       def written?
@@ -148,13 +148,13 @@ module Fixtures
 
       def refute_current
         test "Entity sequence is not current to input sequence [Input Sequence #{input_sequence.inspect}, Entity Sequence #{entity_sequence.inspect}]" do
-          refute(current?)
+          refute(up_to_date?)
         end
       end
 
       def assert_current
         test "Entity sequence is current to the input sequence [Input Sequence #{input_sequence.inspect}, Entity Sequence #{entity_sequence.inspect}]" do
-          assert(current?)
+          assert(up_to_date?)
         end
       end
 

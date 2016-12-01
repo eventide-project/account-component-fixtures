@@ -41,7 +41,7 @@ module AccountComponent
       available_balance >= amount
     end
 
-    def current?(sequence)
+    def up_to_date?(sequence)
       return false if self.sequence.nil?
       self.sequence >= sequence
     end
