@@ -19,5 +19,3 @@ require 'account_component/controls/events/deposited'
 require 'account_component/controls/events/withdrawn'
 require 'account_component/controls/events/held'
 require 'account_component/controls/events/released'
-
-require 'account_component/controls/event_data'
