@@ -10,13 +10,11 @@ context "Commands" do
     open_account = Commands::OpenAccount.build(account_id, customer_id, reply_stream_name: reply_stream)
 
     SubstAttr::Substitute.(:clock, open_account)
-    SubstAttr::Substitute.(:writer, open_account)
+    SubstAttr::Substitute.(:write, open_account)
 
     open_account.()
 
-    writer = open_account.writer
-
-    writes = open_account.writer.writes do |written|
+    writes = open_account.write.writes do |written|
       written.class.message_type == 'OpenAccount'
     end
 

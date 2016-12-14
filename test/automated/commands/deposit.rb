@@ -10,13 +10,13 @@ context "Commands" do
     deposit = Commands::Deposit.build(account_id, amount, reply_stream_name: reply_stream)
 
     SubstAttr::Substitute.(:clock, deposit)
-    SubstAttr::Substitute.(:writer, deposit)
+    SubstAttr::Substitute.(:write, deposit)
 
     deposit.()
 
-    writer = deposit.writer
+    write = deposit.write
 
-    writes = deposit.writer.writes do |written|
+    writes = deposit.write.writes do |written|
       written.class.message_type == 'Deposit'
     end
 

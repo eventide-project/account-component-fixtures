@@ -7,7 +7,7 @@ module AccountComponent
       include AccountComponent::Messages::Events
       include Log::Dependency
 
-      dependency :writer, Messaging::Postgres::Write
+      dependency :write, Messaging::Postgres::Write
       dependency :store, AccountComponent::Store
       dependency :clock, Clock::UTC
 
@@ -42,7 +42,7 @@ module AccountComponent
 
         stream_name = stream_name(account_id)
 
-        writer.write(account_opened, stream_name, expected_version: stream_version)
+        write.(account_opened, stream_name, expected_version: stream_version)
 
         logger.info { "Opened account" }
         logger.info(tag: :verbose) { account_opened.pretty_inspect }
@@ -71,7 +71,7 @@ module AccountComponent
 
         stream_name = stream_name(account_id)
 
-        writer.write(deposited, stream_name, expected_version: stream_version)
+        write.(deposited, stream_name, expected_version: stream_version)
 
         logger.info { "Deposited" }
         logger.info(tag: :verbose) { deposited.pretty_inspect }
@@ -103,7 +103,7 @@ module AccountComponent
           hold_rejected.processed_time = time
           hold_rejected.sequence = sequence
 
-          writer.write(hold_rejected, stream_name)
+          write.(hold_rejected, stream_name)
 
           logger.info { "Hold rejected for insufficient available balance" }
           logger.info(tag: :verbose) { hold_rejected.pretty_inspect }
@@ -114,7 +114,7 @@ module AccountComponent
         held.processed_time = time
         held.sequence = sequence
 
-        writer.write(held, stream_name, expected_version: stream_version)
+        write.(held, stream_name, expected_version: stream_version)
 
         logger.info { "Held" }
         logger.info(tag: :verbose) { held.pretty_inspect }
@@ -146,7 +146,7 @@ module AccountComponent
           withdrawal_rejected.processed_time = time
           withdrawal_rejected.sequence = sequence
 
-          writer.write(withdrawal_rejected, stream_name)
+          write.(withdrawal_rejected, stream_name)
 
           logger.info { "Withdrawal rejected for insufficient available balance" }
           logger.info(tag: :verbose) { withdrawal_rejected.pretty_inspect }
@@ -157,7 +157,7 @@ module AccountComponent
         withdrawn.processed_time = time
         withdrawn.sequence = sequence
 
-        writer.write(withdrawn, stream_name, expected_version: stream_version)
+        write.(withdrawn, stream_name, expected_version: stream_version)
 
         logger.info "Withdrawn"
         logger.info(tag: :verbose) { withdrawn.pretty_inspect }
@@ -186,7 +186,7 @@ module AccountComponent
 
         stream_name = stream_name(account_id)
 
-        writer.write(released, stream_name, expected_version: stream_version)
+        write.(released, stream_name, expected_version: stream_version)
 
         logger.info { "Released" }
         logger.info(tag: :verbose) { released.pretty_inspect }

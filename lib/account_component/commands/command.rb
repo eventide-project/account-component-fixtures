@@ -10,7 +10,7 @@ module AccountComponent
 
           attr_accessor :reply_stream_name
 
-          dependency :writer, Messaging::Postgres::Write
+          dependency :write, Messaging::Postgres::Write
           dependency :clock, Clock::UTC
 
           category :account
@@ -25,7 +25,7 @@ module AccountComponent
 
       def call
         stream_name = command_stream_name(account_id)
-        writer.write(command, stream_name, reply_stream_name: reply_stream_name)
+        write.(command, stream_name, reply_stream_name: reply_stream_name)
       end
     end
   end

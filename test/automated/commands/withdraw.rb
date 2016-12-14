@@ -10,13 +10,11 @@ context "Commands" do
     withdraw = Commands::Withdraw.build(account_id, amount, reply_stream_name: reply_stream)
 
     SubstAttr::Substitute.(:clock, withdraw)
-    SubstAttr::Substitute.(:writer, withdraw)
+    SubstAttr::Substitute.(:write, withdraw)
 
     withdraw.()
 
-    writer = withdraw.writer
-
-    writes = withdraw.writer.writes do |written|
+    writes = withdraw.write.writes do |written|
       written.class.message_type == 'Withdraw'
     end
 

@@ -49,7 +49,7 @@ module Fixtures
     end
 
     def writes(message_type)
-      handler.writer.writes do |written|
+      handler.write.writes do |written|
         written.class.message_type == message_type
       end
     end

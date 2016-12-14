@@ -10,13 +10,11 @@ context "Commands" do
     hold = Commands::Hold.build(account_id, amount, reply_stream_name: reply_stream)
 
     SubstAttr::Substitute.(:clock, hold)
-    SubstAttr::Substitute.(:writer, hold)
+    SubstAttr::Substitute.(:write, hold)
 
     hold.()
 
-    writer = hold.writer
-
-    writes = hold.writer.writes do |written|
+    writes = hold.write.writes do |written|
       written.class.message_type == 'Hold'
     end
 
