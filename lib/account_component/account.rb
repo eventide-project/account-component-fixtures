@@ -40,6 +40,7 @@ module AccountComponent
     def available_balance?(amount)
       available_balance >= amount
     end
+    alias :sufficient_funds? :available_balance?
 
     def up_to_date?(sequence)
       return false if self.sequence.nil?

@@ -98,7 +98,7 @@ module AccountComponent
 
         amount = hold.amount
 
-        if !account.available_balance?(amount)
+        if !account.sufficient_funds?(amount)
           hold_rejected = HoldRejected.follow(hold)
           hold_rejected.processed_time = time
           hold_rejected.sequence = sequence
@@ -141,7 +141,7 @@ module AccountComponent
 
         amount = withdraw.amount
 
-        if !account.available_balance?(amount)
+        if !account.sufficient_funds?(amount)
           withdrawal_rejected = WithdrawalRejected.follow(withdraw)
           withdrawal_rejected.processed_time = time
           withdrawal_rejected.sequence = sequence
