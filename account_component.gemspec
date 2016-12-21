@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.3.3'
 
   s.add_runtime_dependency 'eventide-postgres'
-  s.add_runtime_dependency 'collection'
   s.add_runtime_dependency 'validate'
 
   s.add_development_dependency 'test_bench'
