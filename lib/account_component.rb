@@ -2,7 +2,6 @@ require 'date'
 require 'pp'
 
 require 'eventide/postgres'
-require 'validate'
 
 require 'account_component/messages/commands/open_account'
 require 'account_component/messages/commands/deposit'
