@@ -6,7 +6,7 @@ module AccountComponent
           include Messaging::StreamName
           include AccountComponent::Messages::Commands
           include AccountComponent::Messages::Events
-          include Telemetry::Logger::Dependency
+          include Log::Dependency
 
           attr_accessor :reply_stream_name
 
