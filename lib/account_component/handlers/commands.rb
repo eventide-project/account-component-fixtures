@@ -2,7 +2,7 @@ module AccountComponent
   module Handlers
     class Commands
       include Messaging::Handle
-      include Messaging::StreamName
+      include Messaging::Postgres::StreamName
       include AccountComponent::Messages::Commands
       include AccountComponent::Messages::Events
       include Log::Dependency
