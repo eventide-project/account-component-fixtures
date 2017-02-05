@@ -3,7 +3,7 @@ module AccountComponent
     module Command
       def self.included(cls)
         cls.class_exec do
-          include Messaging::StreamName
+          include Messaging::Postgres::StreamName
           include AccountComponent::Messages::Commands
           include AccountComponent::Messages::Events
           include Log::Dependency
