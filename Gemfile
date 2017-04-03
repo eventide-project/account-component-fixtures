@@ -1,4 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'eventide-postgres'
-gem 'test_bench'
+
+group :development do
+  gem 'test_bench'
+end
